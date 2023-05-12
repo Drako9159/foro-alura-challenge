@@ -30,8 +30,8 @@ public class AutenticationController {
         Authentication authToken = new UsernamePasswordAuthenticationToken(userRecordAutentication.user(), userRecordAutentication.password());
 
 
-
         var userAutenticated = authenticationManager.authenticate(authToken);
+        System.out.println(userAutenticated);
         var JWTtoken = tokenService.tokenGenerator((User) userAutenticated.getPrincipal());
 
 
