@@ -24,14 +24,17 @@ public class Topicos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "titulo")
     private String titulo;
-
+    @Column(name = "mensaje")
     private String mensaje;
-
+    @Column(name = "fecha_de_creacion")
     private LocalDateTime fechaDeCreacion = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
     private StatusTopico status = StatusTopico.NO_RESPONDIDO;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,11 +48,11 @@ public class Topicos {
     @OneToMany(mappedBy = "topico", fetch = FetchType.LAZY)
     private Set<Respuesta> respuesta = new HashSet<>();*/
 
-    public Topicos(Long id){
+    public Topicos(Long id) {
         this.id = id;
     }
 
-    public Topicos(DatosRegistroTopico datosRegistroTopico){
+    public Topicos(DatosRegistroTopico datosRegistroTopico) {
         this.titulo = datosRegistroTopico.titulo();
         this.mensaje = datosRegistroTopico.mensaje();
         this.status = datosRegistroTopico.status();
@@ -57,25 +60,24 @@ public class Topicos {
         this.curso = datosRegistroTopico.curso();
     }
 
-    public void actualizarDatos(DatosActualizarTopico datosActualizarTopico){
-        if(datosActualizarTopico.titulo() != null){
+    public void actualizarDatos(DatosActualizarTopico datosActualizarTopico) {
+        if (datosActualizarTopico.titulo() != null) {
             this.titulo = datosActualizarTopico.titulo();
         }
-        if(datosActualizarTopico.mensaje() != null){
+        if (datosActualizarTopico.mensaje() != null) {
             this.mensaje = datosActualizarTopico.mensaje();
 
         }
-        if(datosActualizarTopico.status() != null){
+        if (datosActualizarTopico.status() != null) {
             this.status = datosActualizarTopico.status();
         }
-        if(datosActualizarTopico.autor() != null){
+        if (datosActualizarTopico.autor() != null) {
             this.autor = new Usuarios(datosActualizarTopico.autor().getId());
         }
-        if(datosActualizarTopico.curso() != null){
+        if (datosActualizarTopico.curso() != null) {
             this.curso = new Cursos(datosActualizarTopico.curso().getId());
         }
     }
-
 
 
 }

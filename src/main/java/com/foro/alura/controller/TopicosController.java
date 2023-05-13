@@ -28,7 +28,9 @@ public class TopicosController {
 
     @PostMapping
     public ResponseEntity<DatosRespuestaTopico> guardarTopico(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder) {
+        System.out.println(datosRegistroTopico);
         Topicos topicos = topicosRepository.save(new Topicos(datosRegistroTopico));
+
         DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(
                 topicos.getId(),
                 topicos.getTitulo(),
