@@ -3,7 +3,6 @@ package com.foro.alura.domain.topicos;
 import com.foro.alura.domain.cursos.Cursos;
 import com.foro.alura.domain.respuestas.Respuestas;
 import com.foro.alura.domain.usuarios.Usuarios;
-import com.foro.alura.model.Curso;
 import com.foro.alura.model.StatusTopico;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

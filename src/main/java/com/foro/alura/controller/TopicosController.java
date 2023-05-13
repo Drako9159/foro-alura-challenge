@@ -63,6 +63,24 @@ public class TopicosController {
 
     }
 
+    @PutMapping()
+    @Transactional
+    public ResponseEntity ActualizarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
+        if (!topicosRepository.existsById(datosActualizarTopico.id()))
+            return new ResponseEntity("TOPIC_NOT_FOUND", HttpStatus.NOT_FOUND);
+        Topicos topico = topicosRepository.getReferenceById(datosActualizarTopico.id());
+        topico.actualizarDatos(datosActualizarTopico);
+        return ResponseEntity.ok(new DatosRespuestaTopico(
+                topico.getId(),
+                topico.getTitulo(),
+                topico.getMensaje(),
+                topico.getFechaDeCreacion(),
+                topico.getStatus(),
+                new Usuarios(topico.getAutor().getId()),
+                new Cursos(topico.getCurso().getId()))
+        );
+    }
+
 
     //LOGICAL DELETE
     @DeleteMapping("/{id}")
