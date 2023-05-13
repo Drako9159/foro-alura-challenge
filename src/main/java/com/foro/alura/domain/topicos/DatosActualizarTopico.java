@@ -10,7 +10,7 @@ public record DatosActualizarTopico(
         Long id,
         String titulo,
         String mensaje,
-        StatusTopico estatus,
+        StatusTopico status,
         Usuarios autor,
         Curso curso
 ) {

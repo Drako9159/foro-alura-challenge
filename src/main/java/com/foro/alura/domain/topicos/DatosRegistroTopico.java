@@ -1,5 +1,6 @@
 package com.foro.alura.domain.topicos;
 
+import com.foro.alura.domain.cursos.Cursos;
 import com.foro.alura.domain.usuarios.Usuarios;
 import com.foro.alura.model.Curso;
 import com.foro.alura.model.StatusTopico;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record DatosRegistroTopico(
         @NotBlank
-        String nombre,
+        String titulo,
         @NotBlank
         String mensaje,
         @NotNull
@@ -16,7 +17,7 @@ public record DatosRegistroTopico(
         @NotNull
         Usuarios autor,
         @NotNull
-        Curso curso
+        Cursos curso
 
 ) {
 }

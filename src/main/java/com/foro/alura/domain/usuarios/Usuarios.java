@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "usuarios")
-@Entity(name = "usuarios")
+@Entity(name = "Usuarios")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,19 +23,27 @@ public class Usuarios {
 
     private String contrasena;
 
-    private Usuarios(Long id){
+    public Usuarios(Long id) {
         this.id = id;
     }
 
-    public Usuarios(DatosRegistroUsuario datosRegistroUsuario){
+    public Usuarios(DatosRegistroUsuario datosRegistroUsuario) {
         this.nombre = datosRegistroUsuario.nombre();
         this.correo = datosRegistroUsuario.correo();
         this.contrasena = datosRegistroUsuario.contrasena();
     }
 
-
-
-
+    public void actualizarDatos(DatosActualizarUsuario datosActualizarUsuario) {
+        if (datosActualizarUsuario.nombre() != null) {
+            this.nombre = datosActualizarUsuario.nombre();
+        }
+        if (datosActualizarUsuario.correo() != null) {
+            this.correo = datosActualizarUsuario.correo();
+        }
+        if (datosActualizarUsuario.contrasena() != null) {
+            this.contrasena = datosActualizarUsuario.contrasena();
+        }
+    }
 
 
 }
