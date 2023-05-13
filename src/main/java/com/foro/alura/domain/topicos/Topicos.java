@@ -1,6 +1,7 @@
 package com.foro.alura.domain.topicos;
 
 import com.foro.alura.domain.cursos.Cursos;
+import com.foro.alura.domain.respuestas.Respuestas;
 import com.foro.alura.domain.usuarios.Usuarios;
 import com.foro.alura.model.Curso;
 import com.foro.alura.model.StatusTopico;
@@ -44,9 +45,9 @@ public class Topicos {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso")
     private Cursos curso;
-/*
+
     @OneToMany(mappedBy = "topico", fetch = FetchType.LAZY)
-    private Set<Respuesta> respuesta = new HashSet<>();*/
+    private Set<Respuestas> respuesta = new HashSet<>();
 
     public Topicos(Long id) {
         this.id = id;
