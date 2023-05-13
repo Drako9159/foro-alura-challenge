@@ -36,7 +36,7 @@ public class RespuestasController {
                 new Topicos(respuesta.getTopico().getId()),
                 new Usuarios(respuesta.getAutor().getId())
         );
-        URI url = uriComponentsBuilder.path("/respuesta/{id}").buildAndExpand(respuesta.getId()).toUri();
+        URI url = uriComponentsBuilder.path("/respuestas/{id}").buildAndExpand(respuesta.getId()).toUri();
         return ResponseEntity.created(url).body(datosRespuestaRespuesta);
     }
 
@@ -47,7 +47,7 @@ public class RespuestasController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> RetornarDatosRespuesta(@PathVariable Long id) {
-        if (respuestaRepository.existsById(id)) return new ResponseEntity("CURSO_NOT_FOUND", HttpStatus.NOT_FOUND);
+        if (!respuestaRepository.existsById(id)) return new ResponseEntity("CURSO_NOT_FOUND", HttpStatus.NOT_FOUND);
         Respuestas respuesta = respuestaRepository.getReferenceById(id);
         var datosRespuesta = new DatosListRespuesta(
                 respuesta.getId(),
@@ -61,7 +61,7 @@ public class RespuestasController {
     @PutMapping
     @Transactional
     public ResponseEntity actualizarDatos(@RequestBody @Valid DatosActualizarRespuesta datosActualizarRespuesta) {
-        if (respuestaRepository.existsById(datosActualizarRespuesta.id()))
+        if (!respuestaRepository.existsById(datosActualizarRespuesta.id()))
             return new ResponseEntity("CURSO_NOT_FOUND", HttpStatus.NOT_FOUND);
         Respuestas respuesta = respuestaRepository.getReferenceById(datosActualizarRespuesta.id());
         respuesta.actualizarDatos(datosActualizarRespuesta);
@@ -78,7 +78,7 @@ public class RespuestasController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity eliminarRespuesta(@PathVariable Long id) {
-        if (respuestaRepository.existsById(id)) return new ResponseEntity("RESPUESTA_NOT_FOUND", HttpStatus.NOT_FOUND);
+        if (!respuestaRepository.existsById(id)) return new ResponseEntity("RESPUESTA_NOT_FOUND", HttpStatus.NOT_FOUND);
         Respuestas respuesta = respuestaRepository.getReferenceById(id);
         respuestaRepository.delete(respuesta);
         return ResponseEntity.noContent().build();

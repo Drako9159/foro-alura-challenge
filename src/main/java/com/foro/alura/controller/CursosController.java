@@ -30,7 +30,7 @@ public class CursosController {
                 curso.getNombre(),
                 curso.getTipo()
         );
-        URI url = uriComponentsBuilder.path("/curso/{id}").buildAndExpand(curso.getId()).toUri();
+        URI url = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(curso.getId()).toUri();
         return ResponseEntity.created(url).body(datosRespuestaCurso);
     }
 

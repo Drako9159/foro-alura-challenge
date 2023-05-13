@@ -19,7 +19,7 @@ public class Usuarios {
     private Long id;
     @Column(name = "nombre")
     private String nombre;
-    @Column(name = "correo")
+    @Column(name = "correo", unique = true)
     private String correo;
     @Column(name = "contrasena")
     private String contrasena;

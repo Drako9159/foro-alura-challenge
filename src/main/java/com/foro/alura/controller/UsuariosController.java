@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -23,13 +24,15 @@ public class UsuariosController {
 
     @PostMapping
     public ResponseEntity<DatosRespuestaUsuario> registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosRegistroUsuario, UriComponentsBuilder uriComponentsBuilder) {
+        if (usuariosRepository.findByCorreo(datosRegistroUsuario.correo()) != null)
+            return new ResponseEntity("USER_EXIST", HttpStatus.BAD_REQUEST);
         Usuarios usuario = usuariosRepository.save(new Usuarios(datosRegistroUsuario));
         DatosRespuestaUsuario datosRespuestaUsuario = new DatosRespuestaUsuario(
                 usuario.getId(),
                 usuario.getNombre(),
                 usuario.getCorreo()
         );
-        URI url = uriComponentsBuilder.path("/usuario/{id}").buildAndExpand(usuario.getId()).toUri();
+        URI url = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(url).body(datosRespuestaUsuario);
     }
 
