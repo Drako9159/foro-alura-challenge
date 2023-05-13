@@ -1,7 +1,7 @@
 package com.foro.alura.domain.respuestas;
 
 import com.foro.alura.domain.topicos.Topicos;
-import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.domain.usuarios.Users;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +11,6 @@ public record DatosRegistroRespuesta(
         @NotNull
         Topicos topico,
         @NotNull
-        Usuarios autor
+        Users autor
 ) {
 }

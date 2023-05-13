@@ -1,7 +1,7 @@
 package com.foro.alura.domain.respuestas;
 
 import com.foro.alura.domain.topicos.Topicos;
-import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.domain.usuarios.Users;
 import jakarta.validation.constraints.NotNull;
 
 public record DatosActualizarRespuesta(
@@ -10,7 +10,7 @@ public record DatosActualizarRespuesta(
         String mensaje,
         Boolean solucion,
         Topicos topico,
-        Usuarios autor
+        Users autor
 ) {
     public DatosActualizarRespuesta(@NotNull Long id, String mensaje, Boolean solucion) {
         this(id, mensaje, solucion, null, null);

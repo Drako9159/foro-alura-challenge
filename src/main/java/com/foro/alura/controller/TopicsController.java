@@ -3,6 +3,7 @@ package com.foro.alura.controller;
 import com.foro.alura.domain.cursos.Cursos;
 import com.foro.alura.domain.topicos.*;
 import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.infra.errors.HandleErrors;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/topicos")
@@ -26,12 +25,12 @@ public class TopicosController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListTopico>> listarTopicos(Pageable pageable) {
+    public ResponseEntity<Page<DatosListTopico>> getTopics(Pageable pageable) {
         return ResponseEntity.ok(topicosRepository.findAll(pageable).map(DatosListTopico::new));
     }
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaTopico> guardarTopico(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<DatosRespuestaTopico> saveTopic(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder) {
         System.out.println(datosRegistroTopico);
         Topicos topicos = topicosRepository.save(new Topicos(datosRegistroTopico));
 
@@ -49,8 +48,8 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> retornaDatosTopico(@PathVariable Long id) {
-        if (!topicosRepository.existsById(id)) return new ResponseEntity("TOPIC_NOT_FOUND", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getTopic(@PathVariable Long id) {
+        if (!topicosRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Topicos topico = topicosRepository.getReferenceById(id);
 
         var datosTopico = new DatosListTopico(
@@ -65,9 +64,9 @@ public class TopicosController {
 
     @PutMapping()
     @Transactional
-    public ResponseEntity ActualizarTopico(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
+    public ResponseEntity updateTopic(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
         if (!topicosRepository.existsById(datosActualizarTopico.id()))
-            return new ResponseEntity("TOPIC_NOT_FOUND", HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Topicos topico = topicosRepository.getReferenceById(datosActualizarTopico.id());
         topico.actualizarDatos(datosActualizarTopico);
         return ResponseEntity.ok(new DatosRespuestaTopico(
@@ -85,8 +84,8 @@ public class TopicosController {
     //LOGICAL DELETE
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity eliminarMedico(@PathVariable Long id) {
-        if (!topicosRepository.existsById(id)) return new ResponseEntity("TOPIC_NOT_FOUND", HttpStatus.NOT_FOUND);
+    public ResponseEntity deleteTopic(@PathVariable Long id) {
+        if (!topicosRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Topicos topico = topicosRepository.getReferenceById(id);
         topicosRepository.delete(topico);
         return ResponseEntity.noContent().build();

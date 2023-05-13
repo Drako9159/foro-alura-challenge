@@ -3,6 +3,7 @@ package com.foro.alura.controller;
 import com.foro.alura.domain.respuestas.*;
 import com.foro.alura.domain.topicos.Topicos;
 import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.infra.errors.HandleErrors;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class RespuestasController {
     }
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaRespuesta> registrarRespuesta(@RequestBody @Valid DatosRegistroRespuesta datosRegistroRespuesta,
+    public ResponseEntity<DatosRespuestaRespuesta> saveResponse(@RequestBody @Valid DatosRegistroRespuesta datosRegistroRespuesta,
                                                                       UriComponentsBuilder uriComponentsBuilder) {
         Respuestas respuesta = respuestaRepository.save(new Respuestas(datosRegistroRespuesta));
         DatosRespuestaRespuesta datosRespuestaRespuesta = new DatosRespuestaRespuesta(
@@ -41,13 +42,13 @@ public class RespuestasController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListRespuesta>> listadoRespuesta(Pageable paginacion) {
+    public ResponseEntity<Page<DatosListRespuesta>> getResponses(Pageable paginacion) {
         return ResponseEntity.ok(respuestaRepository.findAll(paginacion).map(DatosListRespuesta::new));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> RetornarDatosRespuesta(@PathVariable Long id) {
-        if (!respuestaRepository.existsById(id)) return new ResponseEntity("CURSO_NOT_FOUND", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getResponse(@PathVariable Long id) {
+        if (!respuestaRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Respuestas respuesta = respuestaRepository.getReferenceById(id);
         var datosRespuesta = new DatosListRespuesta(
                 respuesta.getId(),
@@ -60,9 +61,9 @@ public class RespuestasController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity actualizarDatos(@RequestBody @Valid DatosActualizarRespuesta datosActualizarRespuesta) {
+    public ResponseEntity updateResponse(@RequestBody @Valid DatosActualizarRespuesta datosActualizarRespuesta) {
         if (!respuestaRepository.existsById(datosActualizarRespuesta.id()))
-            return new ResponseEntity("CURSO_NOT_FOUND", HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Respuestas respuesta = respuestaRepository.getReferenceById(datosActualizarRespuesta.id());
         respuesta.actualizarDatos(datosActualizarRespuesta);
         return ResponseEntity.ok(new DatosRespuestaRespuesta(
@@ -77,8 +78,8 @@ public class RespuestasController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity eliminarRespuesta(@PathVariable Long id) {
-        if (!respuestaRepository.existsById(id)) return new ResponseEntity("RESPUESTA_NOT_FOUND", HttpStatus.NOT_FOUND);
+    public ResponseEntity deleteResponse(@PathVariable Long id) {
+        if (!respuestaRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Respuestas respuesta = respuestaRepository.getReferenceById(id);
         respuestaRepository.delete(respuesta);
         return ResponseEntity.noContent().build();

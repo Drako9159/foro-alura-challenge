@@ -1,8 +1,8 @@
 package com.foro.alura.domain.topicos;
 
-import com.foro.alura.domain.cursos.Cursos;
-import com.foro.alura.domain.respuestas.Respuestas;
-import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.domain.cursos.Courses;
+import com.foro.alura.domain.respuestas.Responses;
+import com.foro.alura.domain.usuarios.Users;
 import com.foro.alura.model.StatusTopico;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,14 +39,14 @@ public class Topicos {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor")
-    private Usuarios autor;
+    private Users autor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso")
-    private Cursos curso;
+    private Courses curso;
 
     @OneToMany(mappedBy = "topico", fetch = FetchType.LAZY)
-    private Set<Respuestas> respuesta = new HashSet<>();
+    private Set<Responses> respuesta = new HashSet<>();
 
     public Topicos(Long id) {
         this.id = id;
@@ -72,10 +72,10 @@ public class Topicos {
             this.status = datosActualizarTopico.status();
         }
         if (datosActualizarTopico.autor() != null) {
-            this.autor = new Usuarios(datosActualizarTopico.autor().getId());
+            this.autor = new Users(datosActualizarTopico.autor().getId());
         }
         if (datosActualizarTopico.curso() != null) {
-            this.curso = new Cursos(datosActualizarTopico.curso().getId());
+            this.curso = new Courses(datosActualizarTopico.curso().getId());
         }
     }
 

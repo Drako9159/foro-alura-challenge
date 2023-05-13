@@ -1,7 +1,7 @@
 package com.foro.alura.domain.respuestas;
 
 import com.foro.alura.domain.topicos.Topicos;
-import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.domain.usuarios.Users;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,6 @@ public record DatosRespuestaRespuesta(
         LocalDateTime fechaDeCreacion,
         Boolean solucion,
         Topicos topicos,
-        Usuarios autor
+        Users autor
 ) {
 }
