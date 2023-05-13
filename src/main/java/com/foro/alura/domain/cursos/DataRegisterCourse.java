@@ -2,10 +2,10 @@ package com.foro.alura.domain.cursos;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record DatosRegistroCurso(
+public record DataRegisterCourse(
         @NotBlank
-        String nombre,
+        String name,
         @NotBlank
-        String tipo
+        String type
 ) {
 }

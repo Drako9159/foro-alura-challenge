@@ -6,39 +6,39 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "cursos")
-@Entity(name = "Cursos")
+@Table(name = "courses")
+@Entity(name = "Courses")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Cursos {
+public class Courses {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "tipo")
-    private String tipo;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "type")
+    private String type;
 
-    public Cursos(Long id){
+    public Courses(Long id){
         this.id = id;
     }
 
-    public Cursos(DatosRegistroCurso datosRegistroCurso){
-        this.nombre = datosRegistroCurso.nombre();
-        this.tipo = datosRegistroCurso.tipo();
+    public Courses(DataRegisterCourse dataRegisterCourse){
+        this.name = dataRegisterCourse.name();
+        this.type = dataRegisterCourse.type();
     }
 
 
-    public void actualizarDatos(DatosActualizarCurso datosActualizarCurso){
-        if(datosActualizarCurso.nombre() != null){
-            this.nombre = datosActualizarCurso.nombre();
+    public void updateData(DataUpdateCourse dataUpdateCourse){
+        if(dataUpdateCourse.name() != null){
+            this.name = dataUpdateCourse.name();
         }
-        if(datosActualizarCurso.tipo() != null){
-            this.tipo = datosActualizarCurso.tipo();
+        if(dataUpdateCourse.type() != null){
+            this.type = dataUpdateCourse.type();
         }
     }
 }

@@ -15,66 +15,64 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/cursos")
-public class CursosController {
-    private final CursosRepository cursosRepository;
+public class CoursesController {
+    private final CoursesRepository coursesRepository;
 
-    public CursosController(CursosRepository cursosRepository) {
-        this.cursosRepository = cursosRepository;
+    public CoursesController(CoursesRepository coursesRepository) {
+        this.coursesRepository = coursesRepository;
     }
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaCurso> saveCourse(@RequestBody @Valid DatosRegistroCurso datosRegistroCurso, UriComponentsBuilder uriComponentsBuilder) {
-        Cursos curso = cursosRepository.save(new Cursos(datosRegistroCurso));
-        DatosRespuestaCurso datosRespuestaCurso = new DatosRespuestaCurso(
-                curso.getId(),
-                curso.getNombre(),
-                curso.getTipo()
+    public ResponseEntity<DataResponseCourse> saveCourse(@RequestBody @Valid DataRegisterCourse dataRegisterCourse, UriComponentsBuilder uriComponentsBuilder) {
+        Courses course = coursesRepository.save(new Courses(dataRegisterCourse));
+        DataResponseCourse dataResponseCourse = new DataResponseCourse(
+                course.getId(),
+                course.getName(),
+                course.getType()
         );
-        URI url = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(curso.getId()).toUri();
-        return ResponseEntity.created(url).body(datosRespuestaCurso);
+        URI url = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(course.getId()).toUri();
+        return ResponseEntity.created(url).body(dataResponseCourse);
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListCurso>> getCourses(Pageable pageable) {
-        return ResponseEntity.ok(cursosRepository.findAll(pageable).map(DatosListCurso::new));
+    public ResponseEntity<Page<DataListCourse>> getCourses(Pageable pageable) {
+        return ResponseEntity.ok(coursesRepository.findAll(pageable).map(DataListCourse::new));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCourse(@PathVariable Long id) {
-        if (!cursosRepository.existsById(id))
+        if (!coursesRepository.existsById(id))
             return new ResponseEntity(new HandleErrors().errorWithMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Cursos curso = cursosRepository.getReferenceById(id);
-        var datosCurso = new DatosRespuestaCurso(
-                curso.getId(),
-                curso.getNombre(),
-                curso.getTipo()
+        Courses course = coursesRepository.getReferenceById(id);
+        var dataListCourse = new DataResponseCourse(
+                course.getId(),
+                course.getName(),
+                course.getType()
         );
-        return ResponseEntity.ok(datosCurso);
+        return ResponseEntity.ok(dataListCourse);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity updateCourse(@RequestBody @Valid DatosActualizarCurso datosActualizarCurso) {
-        if (!cursosRepository.existsById(datosActualizarCurso.id()))
+    public ResponseEntity updateCourse(@RequestBody @Valid DataUpdateCourse dataUpdateCourse) {
+        if (!coursesRepository.existsById(dataUpdateCourse.id()))
             return new ResponseEntity(new HandleErrors().errorWithMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Cursos curso = cursosRepository.getReferenceById(datosActualizarCurso.id());
-        curso.actualizarDatos(datosActualizarCurso);
-        return ResponseEntity.ok(new DatosRespuestaCurso(
-                curso.getId(),
-                curso.getNombre(),
-                curso.getTipo()
+        Courses course = coursesRepository.getReferenceById(dataUpdateCourse.id());
+        course.updateData(dataUpdateCourse);
+        return ResponseEntity.ok(new DataResponseCourse(
+                course.getId(),
+                course.getName(),
+                course.getType()
         ));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteCourse(@PathVariable Long id) {
-        if (!cursosRepository.existsById(id))
+        if (!coursesRepository.existsById(id))
             return new ResponseEntity(new HandleErrors().errorWithMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Cursos curso = cursosRepository.getReferenceById(id);
-        cursosRepository.delete(curso);
+        Courses course = coursesRepository.getReferenceById(id);
+        coursesRepository.delete(course);
         return ResponseEntity.noContent().build();
     }
-
-
 }

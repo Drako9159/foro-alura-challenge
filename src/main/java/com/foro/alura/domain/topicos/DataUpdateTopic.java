@@ -5,16 +5,16 @@ import com.foro.alura.domain.usuarios.Users;
 import com.foro.alura.model.StatusTopico;
 import jakarta.validation.constraints.NotNull;
 
-public record DatosActualizarTopico(
+public record DataUpdateTopic(
         @NotNull
         Long id,
-        String titulo,
-        String mensaje,
+        String title,
+        String message,
         StatusTopico status,
-        Users autor,
-        Courses curso
+        Users author,
+        Courses course
 ) {
-        public DatosActualizarTopico(@NotNull Long id, String titulo, String mensaje, StatusTopico status){
-                this(id, titulo, mensaje, status, null, null);
-        }
+    public DataUpdateTopic(@NotNull Long id, String title, String message, StatusTopico status) {
+        this(id, title, message, status, null, null);
+    }
 }

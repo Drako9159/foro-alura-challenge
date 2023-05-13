@@ -1,16 +1,16 @@
 package com.foro.alura.domain.respuestas;
 
-import com.foro.alura.domain.topicos.Topicos;
+import com.foro.alura.domain.topicos.Topics;
 import com.foro.alura.domain.usuarios.Users;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DatosRegistroRespuesta(
+public record DataRegisterResponse(
         @NotBlank
-        String mensaje,
+        String message,
         @NotNull
-        Topicos topico,
+        Topics topic,
         @NotNull
-        Users autor
+        Users author
 ) {
 }

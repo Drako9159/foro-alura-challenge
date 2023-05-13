@@ -14,68 +14,65 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "topicos")
-@Entity(name = "Topicos")
+@Table(name = "topics")
+@Entity(name = "Topics")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Topicos {
+public class Topics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "titulo")
-    private String titulo;
-    @Column(name = "mensaje")
-    private String mensaje;
-    @Column(name = "fecha_de_creacion")
-    private LocalDateTime fechaDeCreacion = LocalDateTime.now();
-
+    @Column(name = "title")
+    private String title;
+    @Column(name = "message")
+    private String message;
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt = LocalDateTime.now();
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado")
+    @Column(name = "status")
     private StatusTopico status = StatusTopico.NO_RESPONDIDO;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor")
-    private Users autor;
-
+    @JoinColumn(name = "author")
+    private Users author;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curso")
-    private Courses curso;
+    @JoinColumn(name = "course")
+    private Courses course;
 
-    @OneToMany(mappedBy = "topico", fetch = FetchType.LAZY)
-    private Set<Responses> respuesta = new HashSet<>();
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    private Set<Responses> responses = new HashSet<>();
 
-    public Topicos(Long id) {
+    public Topics(Long id) {
         this.id = id;
     }
 
-    public Topicos(DatosRegistroTopico datosRegistroTopico) {
-        this.titulo = datosRegistroTopico.titulo();
-        this.mensaje = datosRegistroTopico.mensaje();
-        this.status = datosRegistroTopico.status();
-        this.autor = datosRegistroTopico.autor();
-        this.curso = datosRegistroTopico.curso();
+    public Topics(DataRegisterTopic dataRegisterTopic) {
+        this.title = dataRegisterTopic.title();
+        this.message = dataRegisterTopic.message();
+        this.status = dataRegisterTopic.status();
+        this.author = dataRegisterTopic.author();
+        this.course = dataRegisterTopic.course();
     }
 
-    public void actualizarDatos(DatosActualizarTopico datosActualizarTopico) {
-        if (datosActualizarTopico.titulo() != null) {
-            this.titulo = datosActualizarTopico.titulo();
+    public void updateData(DataUpdateTopic dataUpdateTopic) {
+        if (dataUpdateTopic.title() != null) {
+            this.title = dataUpdateTopic.title();
         }
-        if (datosActualizarTopico.mensaje() != null) {
-            this.mensaje = datosActualizarTopico.mensaje();
+        if (dataUpdateTopic.message() != null) {
+            this.message = dataUpdateTopic.message();
 
         }
-        if (datosActualizarTopico.status() != null) {
-            this.status = datosActualizarTopico.status();
+        if (dataUpdateTopic.status() != null) {
+            this.status = dataUpdateTopic.status();
         }
-        if (datosActualizarTopico.autor() != null) {
-            this.autor = new Users(datosActualizarTopico.autor().getId());
+        if (dataUpdateTopic.author() != null) {
+            this.author = new Users(dataUpdateTopic.author().getId());
         }
-        if (datosActualizarTopico.curso() != null) {
-            this.curso = new Courses(datosActualizarTopico.curso().getId());
+        if (dataUpdateTopic.course() != null) {
+            this.course = new Courses(dataUpdateTopic.course().getId());
         }
     }
 

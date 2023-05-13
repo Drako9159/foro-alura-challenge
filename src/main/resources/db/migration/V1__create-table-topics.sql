@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS topicos
+CREATE TABLE IF NOT EXISTS topics
 (
     id                  BIGSERIAL    NOT NULL,
-    titulo              VARCHAR(100) NOT NULL,
-    mensaje             VARCHAR(300) NOT NULL,
-    fecha_de_creacion   TIMESTAMP    NOT NULL,
-    estado              VARCHAR(100) NOT NULL,
-    autor               BIGSERIAL    NOT NULL,
-    curso               BIGSERIAL    NOT NULL,
+    title               VARCHAR(100) NOT NULL,
+    message             VARCHAR(300) NOT NULL,
+    createdAt           TIMESTAMP    NOT NULL,
+    status              VARCHAR(100) NOT NULL,
+    author              BIGSERIAL    NOT NULL,
+    course              BIGSERIAL    NOT NULL,
     PRIMARY KEY (id)
 );

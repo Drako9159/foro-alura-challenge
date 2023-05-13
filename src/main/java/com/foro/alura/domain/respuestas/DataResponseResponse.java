@@ -1,16 +1,16 @@
 package com.foro.alura.domain.respuestas;
 
-import com.foro.alura.domain.topicos.Topicos;
+import com.foro.alura.domain.topicos.Topics;
 import com.foro.alura.domain.usuarios.Users;
 
 import java.time.LocalDateTime;
 
-public record DatosRespuestaRespuesta(
+public record DataResponseResponse(
         Long id,
-        String mensaje,
-        LocalDateTime fechaDeCreacion,
-        Boolean solucion,
-        Topicos topicos,
-        Users autor
+        String message,
+        LocalDateTime createdAt,
+        Boolean solution,
+        Topics topic,
+        Users author
 ) {
 }

@@ -6,13 +6,13 @@ import com.foro.alura.model.StatusTopico;
 
 import java.time.LocalDateTime;
 
-public record DatosRespuestaTopico(
+public record DataResponseTopic(
         Long id,
-        String titulo,
-        String mensaje,
-        LocalDateTime fechaDeCreacion,
+        String title,
+        String message,
+        LocalDateTime createdAt,
         StatusTopico status,
-        Users autor,
-        Courses curso
+        Users author,
+        Courses course
 ) {
 }

@@ -1,13 +1,13 @@
 package com.foro.alura.domain.respuestas;
 
-public record DatosListRespuesta(
+public record DataListResponse(
         Long id,
-        String mensaje,
-        String fechaDeCreacion,
-        Boolean solucion
+        String message,
+        String createdAt,
+        Boolean solution
 ) {
-    public DatosListRespuesta(Respuestas respuestas) {
-        this(respuestas.getId(), respuestas.getMensaje(), respuestas.getFechaDeCreacion().toString(), respuestas.getSolucion());
+    public DataListResponse(Responses responses) {
+        this(responses.getId(), responses.getMessage(), responses.getCreatedAt().toString(), responses.getSolution());
     }
 
 }

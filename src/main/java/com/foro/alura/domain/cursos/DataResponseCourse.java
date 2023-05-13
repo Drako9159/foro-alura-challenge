@@ -1,8 +1,8 @@
 package com.foro.alura.domain.cursos;
 
-public record DatosRespuestaCurso(
+public record DataResponseCourse(
         Long id,
-        String nombre,
-        String tipo
+        String name,
+        String type
 ) {
 }

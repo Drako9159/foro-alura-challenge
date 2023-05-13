@@ -1,6 +1,6 @@
 package com.foro.alura.domain.respuestas;
 
-import com.foro.alura.domain.topicos.Topicos;
+import com.foro.alura.domain.topicos.Topics;
 import com.foro.alura.domain.usuarios.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,53 +10,48 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "respuestas")
-@Entity(name = "Respuestas")
+@Table(name = "responses")
+@Entity(name = "Responses")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Respuestas {
+public class Responses {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "mensaje")
-    private String mensaje;
-
+    @Column(name = "message")
+    private String message;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "topico")
-    private Topicos topico;
-
+    @JoinColumn(name = "topic")
+    private Topics topic;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor")
-    private Users autor;
+    @JoinColumn(name = "author")
+    private Users author;
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "solution")
+    private Boolean solution = false;
 
-    @Column(name = "fecha_de_creacion")
-    private LocalDateTime fechaDeCreacion = LocalDateTime.now();
-
-    @Column(name = "solucion")
-    private Boolean solucion = false;
-
-    public Respuestas(DatosRegistroRespuesta datosRegistroRespuesta){
-        this.mensaje = datosRegistroRespuesta.mensaje();
-        this.topico = new Topicos(datosRegistroRespuesta.topico().getId());
-        this.autor = new Users(datosRegistroRespuesta.autor().getId());
+    public Responses(DataRegisterResponse dataRegisterResponse){
+        this.message = dataRegisterResponse.message();
+        this.topic = new Topics(dataRegisterResponse.topic().getId());
+        this.author = new Users(dataRegisterResponse.author().getId());
     }
-    public void actualizarDatos(DatosActualizarRespuesta datosActualizarRespuesta) {
-        if (datosActualizarRespuesta.mensaje() != null) {
-            this.mensaje = datosActualizarRespuesta.mensaje();
+    public void updateData(DataUpdateResponse dataUpdateResponse) {
+        if (dataUpdateResponse.message() != null) {
+            this.message = dataUpdateResponse.message();
         }
-        if (datosActualizarRespuesta.solucion() != null) {
-            this.solucion = datosActualizarRespuesta.solucion();
+        if (dataUpdateResponse.solution() != null) {
+            this.solution = dataUpdateResponse.solution();
         }
-        if (datosActualizarRespuesta.topico() != null) {
-            this.topico = new Topicos(datosActualizarRespuesta.topico().getId());
+        if (dataUpdateResponse.topic() != null) {
+            this.topic = new Topics(dataUpdateResponse.topic().getId());
         }
-        if (datosActualizarRespuesta.autor() != null) {
-            this.autor = new Users(datosActualizarRespuesta.autor().getId());
+        if (dataUpdateResponse.author() != null) {
+            this.author = new Users(dataUpdateResponse.author().getId());
         }
     }
 

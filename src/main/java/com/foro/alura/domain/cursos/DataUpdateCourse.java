@@ -2,10 +2,10 @@ package com.foro.alura.domain.cursos;
 
 import jakarta.validation.constraints.NotNull;
 
-public record DatosActualizarCurso(
+public record DataUpdateCourse(
         @NotNull
         Long id,
-        String nombre,
-        String tipo
+        String name,
+        String type
 ) {
 }

@@ -6,17 +6,17 @@ import com.foro.alura.model.StatusTopico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DatosRegistroTopico(
+public record DataRegisterTopic(
         @NotBlank
-        String titulo,
+        String title,
         @NotBlank
-        String mensaje,
+        String message,
         @NotNull
         StatusTopico status,
         @NotNull
-        Users autor,
+        Users author,
         @NotNull
-        Courses curso
+        Courses course
 
 ) {
 }

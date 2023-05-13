@@ -8,11 +8,21 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestControllerAdvice
 public class HandleErrors {
 
+
+    public Map<String, Object> errorWithMessage(String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", message);
+        return map;
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity error404(){
+    public ResponseEntity error404() {
         return ResponseEntity.notFound().build();
     }
 
@@ -29,8 +39,8 @@ public class HandleErrors {
         return ResponseEntity.badRequest().body(error);
     }
 
-    private record DatosErrorValidacion(String campo, String error){
-        public DatosErrorValidacion(FieldError error){
+    private record DatosErrorValidacion(String campo, String error) {
+        public DatosErrorValidacion(FieldError error) {
             this(error.getField(), error.getDefaultMessage());
         }
     }

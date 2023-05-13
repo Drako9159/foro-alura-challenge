@@ -1,8 +1,8 @@
 package com.foro.alura.controller;
 
 import com.foro.alura.domain.respuestas.*;
-import com.foro.alura.domain.topicos.Topicos;
-import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.domain.topicos.Topics;
+import com.foro.alura.domain.usuarios.Users;
 import com.foro.alura.infra.errors.HandleErrors;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -17,71 +17,71 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/respuestas")
-public class RespuestasController {
+public class ResponsesController {
 
-    private final RespuestaRepository respuestaRepository;
+    private final ResponsesRepository responsesRepository;
 
-    public RespuestasController(RespuestaRepository respuestaRepository) {
-        this.respuestaRepository = respuestaRepository;
+    public ResponsesController(ResponsesRepository responsesRepository) {
+        this.responsesRepository = responsesRepository;
     }
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaRespuesta> saveResponse(@RequestBody @Valid DatosRegistroRespuesta datosRegistroRespuesta,
-                                                                      UriComponentsBuilder uriComponentsBuilder) {
-        Respuestas respuesta = respuestaRepository.save(new Respuestas(datosRegistroRespuesta));
-        DatosRespuestaRespuesta datosRespuestaRespuesta = new DatosRespuestaRespuesta(
-                respuesta.getId(),
-                respuesta.getMensaje(),
-                respuesta.getFechaDeCreacion(),
-                respuesta.getSolucion(),
-                new Topicos(respuesta.getTopico().getId()),
-                new Usuarios(respuesta.getAutor().getId())
+    public ResponseEntity<DataResponseResponse> saveResponse(@RequestBody @Valid DataRegisterResponse dataRegisterResponse,
+                                                             UriComponentsBuilder uriComponentsBuilder) {
+        Responses response = responsesRepository.save(new Responses(dataRegisterResponse));
+        DataResponseResponse dataResponseResponse = new DataResponseResponse(
+                response.getId(),
+                response.getMessage(),
+                response.getCreatedAt(),
+                response.getSolution(),
+                new Topics(response.getTopic().getId()),
+                new Users(response.getAuthor().getId())
         );
-        URI url = uriComponentsBuilder.path("/respuestas/{id}").buildAndExpand(respuesta.getId()).toUri();
-        return ResponseEntity.created(url).body(datosRespuestaRespuesta);
+        URI url = uriComponentsBuilder.path("/respuestas/{id}").buildAndExpand(response.getId()).toUri();
+        return ResponseEntity.created(url).body(dataResponseResponse);
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListRespuesta>> getResponses(Pageable paginacion) {
-        return ResponseEntity.ok(respuestaRepository.findAll(paginacion).map(DatosListRespuesta::new));
+    public ResponseEntity<Page<DataListResponse>> getResponses(Pageable pageable) {
+        return ResponseEntity.ok(responsesRepository.findAll(pageable).map(DataListResponse::new));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getResponse(@PathVariable Long id) {
-        if (!respuestaRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Respuestas respuesta = respuestaRepository.getReferenceById(id);
-        var datosRespuesta = new DatosListRespuesta(
-                respuesta.getId(),
-                respuesta.getMensaje(),
-                respuesta.getFechaDeCreacion().toString(),
-                respuesta.getSolucion()
+        if (!responsesRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
+        Responses response = responsesRepository.getReferenceById(id);
+        var dataListResponse = new DataListResponse(
+                response.getId(),
+                response.getMessage(),
+                response.getCreatedAt().toString(),
+                response.getSolution()
         );
-        return ResponseEntity.ok(datosRespuesta);
+        return ResponseEntity.ok(dataListResponse);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity updateResponse(@RequestBody @Valid DatosActualizarRespuesta datosActualizarRespuesta) {
-        if (!respuestaRepository.existsById(datosActualizarRespuesta.id()))
+    public ResponseEntity updateResponse(@RequestBody @Valid DataUpdateResponse dataUpdateResponse) {
+        if (!responsesRepository.existsById(dataUpdateResponse.id()))
             return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Respuestas respuesta = respuestaRepository.getReferenceById(datosActualizarRespuesta.id());
-        respuesta.actualizarDatos(datosActualizarRespuesta);
-        return ResponseEntity.ok(new DatosRespuestaRespuesta(
-                respuesta.getId(),
-                respuesta.getMensaje(),
-                respuesta.getFechaDeCreacion(),
-                respuesta.getSolucion(),
-                new Topicos(respuesta.getTopico().getId()),
-                new Usuarios(respuesta.getAutor().getId()))
+        Responses response = responsesRepository.getReferenceById(dataUpdateResponse.id());
+        response.updateData(dataUpdateResponse);
+        return ResponseEntity.ok(new DataResponseResponse(
+                response.getId(),
+                response.getMessage(),
+                response.getCreatedAt(),
+                response.getSolution(),
+                new Topics(response.getTopic().getId()),
+                new Users(response.getAuthor().getId()))
         );
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteResponse(@PathVariable Long id) {
-        if (!respuestaRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Respuestas respuesta = respuestaRepository.getReferenceById(id);
-        respuestaRepository.delete(respuesta);
+        if (!responsesRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
+        Responses response = responsesRepository.getReferenceById(id);
+        responsesRepository.delete(response);
         return ResponseEntity.noContent().build();
 
     }

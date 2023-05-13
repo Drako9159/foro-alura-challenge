@@ -3,13 +3,13 @@ package com.foro.alura.domain.usuarios;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record DatosRegistroUsuario(
+public record DataRegisterUser(
         @NotBlank
-        String nombre,
+        String name,
         @NotBlank
         @Email
-        String correo,
+        String email,
         @NotBlank
-        String contrasena
+        String password
 ) {
 }

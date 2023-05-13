@@ -45,6 +45,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 handleFilterError(response, "TOKEN_IS_OUT");
             }
         }
+        filterChain.doFilter(request, response);
     }
 
     public void handleFilterError(HttpServletResponse response, String message) throws IOException {

@@ -1,8 +1,8 @@
 package com.foro.alura.domain.usuarios;
 
-public record DatosRespuestaUsuario(
+public record DataResponseUser(
         Long id,
-        String nombre,
-        String correo
+        String name,
+        String email
 ) {
 }

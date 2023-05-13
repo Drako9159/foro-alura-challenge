@@ -1,8 +1,8 @@
 package com.foro.alura.controller;
 
-import com.foro.alura.domain.cursos.Cursos;
+import com.foro.alura.domain.cursos.Courses;
 import com.foro.alura.domain.topicos.*;
-import com.foro.alura.domain.usuarios.Usuarios;
+import com.foro.alura.domain.usuarios.Users;
 import com.foro.alura.infra.errors.HandleErrors;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -17,66 +17,65 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/topicos")
-public class TopicosController {
-    private final TopicosRepository topicosRepository;
+public class TopicsController {
+    private final TopicsRepository topicsRepository;
 
-    public TopicosController(TopicosRepository topicosRepository) {
-        this.topicosRepository = topicosRepository;
+    public TopicsController(TopicsRepository topicsRepository) {
+        this.topicsRepository = topicsRepository;
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListTopico>> getTopics(Pageable pageable) {
-        return ResponseEntity.ok(topicosRepository.findAll(pageable).map(DatosListTopico::new));
+    public ResponseEntity<Page<DataListTopic>> getTopics(Pageable pageable) {
+        return ResponseEntity.ok(topicsRepository.findAll(pageable).map(DataListTopic::new));
     }
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaTopico> saveTopic(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder) {
-        System.out.println(datosRegistroTopico);
-        Topicos topicos = topicosRepository.save(new Topicos(datosRegistroTopico));
-
-        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(
-                topicos.getId(),
-                topicos.getTitulo(),
-                topicos.getMensaje(),
-                topicos.getFechaDeCreacion(),
-                topicos.getStatus(),
-                new Usuarios(topicos.getAutor().getId()),
-                new Cursos(topicos.getCurso().getId())
+    public ResponseEntity<DataResponseTopic> saveTopic(@RequestBody @Valid DataRegisterTopic dataRegisterTopic, UriComponentsBuilder uriComponentsBuilder) {
+        Topics topics = topicsRepository.save(new Topics(dataRegisterTopic));
+        DataResponseTopic dataResponseTopic = new DataResponseTopic(
+                topics.getId(),
+                topics.getTitle(),
+                topics.getMessage(),
+                topics.getCreatedAt(),
+                topics.getStatus(),
+                new Users(topics.getAuthor().getId()),
+                new Courses(topics.getCourse().getId())
         );
-        URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topicos.getId()).toUri();
-        return ResponseEntity.created(url).body(datosRespuestaTopico);
+        URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topics.getId()).toUri();
+        return ResponseEntity.created(url).body(dataResponseTopic);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTopic(@PathVariable Long id) {
-        if (!topicosRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Topicos topico = topicosRepository.getReferenceById(id);
+        if (!topicsRepository.existsById(id))
+            return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
+        Topics topic = topicsRepository.getReferenceById(id);
 
-        var datosTopico = new DatosListTopico(
-                topico.getId(),
-                topico.getTitulo(),
-                topico.getMensaje(),
-                topico.getFechaDeCreacion().toString()
+        var dataListTopic = new DataListTopic(
+                topic.getId(),
+                topic.getTitle(),
+                topic.getMessage(),
+                topic.getCreatedAt().toString()
         );
-        return ResponseEntity.ok(datosTopico);
+        return ResponseEntity.ok(dataListTopic);
 
     }
 
     @PutMapping()
     @Transactional
-    public ResponseEntity updateTopic(@RequestBody @Valid DatosActualizarTopico datosActualizarTopico) {
-        if (!topicosRepository.existsById(datosActualizarTopico.id()))
+    public ResponseEntity updateTopic(@RequestBody @Valid DataUpdateTopic dataUpdateTopic) {
+        if (!topicsRepository.existsById(dataUpdateTopic.id()))
             return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Topicos topico = topicosRepository.getReferenceById(datosActualizarTopico.id());
-        topico.actualizarDatos(datosActualizarTopico);
-        return ResponseEntity.ok(new DatosRespuestaTopico(
-                topico.getId(),
-                topico.getTitulo(),
-                topico.getMensaje(),
-                topico.getFechaDeCreacion(),
-                topico.getStatus(),
-                new Usuarios(topico.getAutor().getId()),
-                new Cursos(topico.getCurso().getId()))
+        Topics topic = topicsRepository.getReferenceById(dataUpdateTopic.id());
+        topic.updateData(dataUpdateTopic);
+        return ResponseEntity.ok(new DataResponseTopic(
+                topic.getId(),
+                topic.getTitle(),
+                topic.getMessage(),
+                topic.getCreatedAt(),
+                topic.getStatus(),
+                new Users(topic.getAuthor().getId()),
+                new Courses(topic.getCourse().getId()))
         );
     }
 
@@ -85,9 +84,10 @@ public class TopicosController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteTopic(@PathVariable Long id) {
-        if (!topicosRepository.existsById(id)) return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
-        Topicos topico = topicosRepository.getReferenceById(id);
-        topicosRepository.delete(topico);
+        if (!topicsRepository.existsById(id))
+            return new ResponseEntity(new HandleErrors().errorWithMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
+        Topics topic = topicsRepository.getReferenceById(id);
+        topicsRepository.delete(topic);
         return ResponseEntity.noContent().build();
 
     }

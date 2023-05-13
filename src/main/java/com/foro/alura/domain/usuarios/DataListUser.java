@@ -1,7 +1,7 @@
 package com.foro.alura.domain.usuarios;
 
-public record DatosListUsuario(Long id, String nombre, String email) {
-    public DatosListUsuario(Usuarios usuario){
-        this(usuario.getId(), usuario.getNombre(), usuario.getCorreo());
+public record DataListUser(Long id, String name, String email) {
+    public DataListUser(Users user){
+        this(user.getId(), user.getName(), user.getEmail());
     }
 }

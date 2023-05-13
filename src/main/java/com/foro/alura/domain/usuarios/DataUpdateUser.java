@@ -2,11 +2,11 @@ package com.foro.alura.domain.usuarios;
 
 import jakarta.validation.constraints.NotNull;
 
-public record DatosActualizarUsuario(
+public record DataUpdateUser(
         @NotNull
         Long id,
-        String nombre,
-        String correo,
-        String contrasena
+        String name,
+        String email,
+        String password
 ) {
 }
