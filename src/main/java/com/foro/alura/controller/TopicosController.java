@@ -6,11 +6,15 @@ import com.foro.alura.domain.usuarios.Usuarios;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/topicos")
@@ -42,6 +46,33 @@ public class TopicosController {
         );
         URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topicos.getId()).toUri();
         return ResponseEntity.created(url).body(datosRespuestaTopico);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> retornaDatosTopico(@PathVariable Long id) {
+        if (!topicosRepository.existsById(id)) return new ResponseEntity("TOPIC_NOT_FOUND", HttpStatus.NOT_FOUND);
+        Topicos topico = topicosRepository.getReferenceById(id);
+
+        var datosTopico = new DatosListTopico(
+                topico.getId(),
+                topico.getTitulo(),
+                topico.getMensaje(),
+                topico.getFechaDeCreacion().toString()
+        );
+        return ResponseEntity.ok(datosTopico);
+
+    }
+
+
+    //LOGICAL DELETE
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarMedico(@PathVariable Long id) {
+        if (!topicosRepository.existsById(id)) return new ResponseEntity("TOPIC_NOT_FOUND", HttpStatus.NOT_FOUND);
+        Topicos topico = topicosRepository.getReferenceById(id);
+        topicosRepository.delete(topico);
+        return ResponseEntity.noContent().build();
+
     }
 
 

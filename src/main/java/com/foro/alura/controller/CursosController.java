@@ -1,15 +1,12 @@
 package com.foro.alura.controller;
 
-import com.foro.alura.domain.cursos.Cursos;
-import com.foro.alura.domain.cursos.CursosRepository;
-import com.foro.alura.domain.cursos.DatosRegistroCurso;
-import com.foro.alura.domain.cursos.DatosRespuestaCurso;
+import com.foro.alura.domain.cursos.*;
+import com.foro.alura.domain.usuarios.DatosListUsuario;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -34,4 +31,10 @@ public class CursosController {
         URI url = uriComponentsBuilder.path("/curso/{id}").buildAndExpand(curso.getId()).toUri();
         return ResponseEntity.created(url).body(datosRespuestaCurso);
     }
+
+    @GetMapping
+    public ResponseEntity<Page<DatosListCurso>> listadoCurso(Pageable pageable) {
+        return ResponseEntity.ok(cursosRepository.findAll(pageable).map(DatosListCurso::new));
+    }
+
 }
