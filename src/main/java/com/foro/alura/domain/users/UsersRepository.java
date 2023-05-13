@@ -1,4 +1,4 @@
-package com.foro.alura.domain.usuarios;
+package com.foro.alura.domain.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

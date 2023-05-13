@@ -1,7 +1,7 @@
-package com.foro.alura.domain.respuestas;
+package com.foro.alura.domain.responses;
 
-import com.foro.alura.domain.topicos.Topics;
-import com.foro.alura.domain.usuarios.Users;
+import com.foro.alura.domain.topics.Topics;
+import com.foro.alura.domain.users.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,16 +22,21 @@ public class Responses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "message")
     private String message;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic")
     private Topics topic;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author")
     private Users author;
-    @Column(name = "createdAt")
-    private LocalDateTime createdAt = LocalDateTime.now();
+
     @Column(name = "solution")
     private Boolean solution = false;
 

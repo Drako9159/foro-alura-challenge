@@ -1,6 +1,6 @@
 package com.foro.alura.controller;
 
-import com.foro.alura.domain.cursos.*;
+import com.foro.alura.domain.courses.*;
 import com.foro.alura.infra.errors.HandleErrors;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

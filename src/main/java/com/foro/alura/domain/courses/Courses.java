@@ -1,4 +1,4 @@
-package com.foro.alura.domain.cursos;
+package com.foro.alura.domain.courses;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,26 +18,28 @@ public class Courses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "type")
     private String type;
 
-    public Courses(Long id){
+    public Courses(Long id) {
         this.id = id;
     }
 
-    public Courses(DataRegisterCourse dataRegisterCourse){
+    public Courses(DataRegisterCourse dataRegisterCourse) {
         this.name = dataRegisterCourse.name();
         this.type = dataRegisterCourse.type();
     }
 
 
-    public void updateData(DataUpdateCourse dataUpdateCourse){
-        if(dataUpdateCourse.name() != null){
+    public void updateData(DataUpdateCourse dataUpdateCourse) {
+        if (dataUpdateCourse.name() != null) {
             this.name = dataUpdateCourse.name();
         }
-        if(dataUpdateCourse.type() != null){
+        if (dataUpdateCourse.type() != null) {
             this.type = dataUpdateCourse.type();
         }
     }

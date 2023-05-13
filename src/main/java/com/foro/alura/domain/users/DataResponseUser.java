@@ -1,4 +1,4 @@
-package com.foro.alura.domain.usuarios;
+package com.foro.alura.domain.users;
 
 public record DataResponseUser(
         Long id,

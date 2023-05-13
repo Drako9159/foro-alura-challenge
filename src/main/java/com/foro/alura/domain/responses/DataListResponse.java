@@ -1,4 +1,4 @@
-package com.foro.alura.domain.respuestas;
+package com.foro.alura.domain.responses;
 
 public record DataListResponse(
         Long id,

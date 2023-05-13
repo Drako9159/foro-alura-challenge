@@ -1,7 +1,7 @@
-package com.foro.alura.domain.topicos;
+package com.foro.alura.domain.topics;
 
-import com.foro.alura.domain.cursos.Courses;
-import com.foro.alura.domain.usuarios.Users;
+import com.foro.alura.domain.courses.Courses;
+import com.foro.alura.domain.users.Users;
 import com.foro.alura.model.StatusTopico;
 import jakarta.validation.constraints.NotNull;
 

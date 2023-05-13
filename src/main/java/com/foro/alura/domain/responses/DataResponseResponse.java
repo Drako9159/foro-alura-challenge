@@ -1,7 +1,7 @@
-package com.foro.alura.domain.respuestas;
+package com.foro.alura.domain.responses;
 
-import com.foro.alura.domain.topicos.Topics;
-import com.foro.alura.domain.usuarios.Users;
+import com.foro.alura.domain.topics.Topics;
+import com.foro.alura.domain.users.Users;
 
 import java.time.LocalDateTime;
 

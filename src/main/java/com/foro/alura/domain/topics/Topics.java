@@ -1,8 +1,8 @@
-package com.foro.alura.domain.topicos;
+package com.foro.alura.domain.topics;
 
-import com.foro.alura.domain.cursos.Courses;
-import com.foro.alura.domain.respuestas.Responses;
-import com.foro.alura.domain.usuarios.Users;
+import com.foro.alura.domain.courses.Courses;
+import com.foro.alura.domain.responses.Responses;
+import com.foro.alura.domain.users.Users;
 import com.foro.alura.model.StatusTopico;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,18 +26,24 @@ public class Topics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "title")
     private String title;
+
     @Column(name = "message")
     private String message;
-    @Column(name = "createdAt")
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusTopico status = StatusTopico.NO_RESPONDIDO;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author")
     private Users author;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course")
     private Courses course;

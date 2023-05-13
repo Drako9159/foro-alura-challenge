@@ -1,4 +1,4 @@
-package com.foro.alura.domain.topicos;
+package com.foro.alura.domain.topics;
 
 
 public record DataListTopic(Long id, String title, String message, String createdAt) {
