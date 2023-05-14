@@ -21,6 +21,7 @@ public class TokenService {
     private String apiSecret;
 
     public String tokenGenerator(User user){
+
         try{
             Algorithm algorithm = Algorithm.HMAC256(apiSecret);
             return JWT.create()
@@ -57,6 +58,7 @@ public class TokenService {
     }
 
     private Instant generateDateExpire() {
-        return LocalDateTime.now().plusHours(5).toInstant(ZoneOffset.of("-05:00"));
+        // 5 to 24
+        return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-05:00"));
     }
 }

@@ -1,7 +1,7 @@
 package com.foro.alura.controller;
 
 import com.foro.alura.domain.courses.*;
-import com.foro.alura.infra.errors.HandleErrors;
+import com.foro.alura.infra.errors.HandleJson;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +25,12 @@ public class CoursesController {
     @PostMapping
     public ResponseEntity<DataResponseCourse> saveCourse(@RequestBody @Valid DataRegisterCourse dataRegisterCourse, UriComponentsBuilder uriComponentsBuilder) {
         Courses course = coursesRepository.save(new Courses(dataRegisterCourse));
-        DataResponseCourse dataResponseCourse = new DataResponseCourse(
+        URI url = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(course.getId()).toUri();
+        return ResponseEntity.created(url).body(new DataResponseCourse(
                 course.getId(),
                 course.getName(),
                 course.getType()
-        );
-        URI url = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(course.getId()).toUri();
-        return ResponseEntity.created(url).body(dataResponseCourse);
+        ));
     }
 
     @GetMapping
@@ -40,23 +39,22 @@ public class CoursesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCourse(@PathVariable Long id) {
+    public ResponseEntity<DataResponseCourse> getCourse(@PathVariable Long id) {
         if (!coursesRepository.existsById(id))
-            return new ResponseEntity(new HandleErrors().errorWithMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new HandleJson().withMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Courses course = coursesRepository.getReferenceById(id);
-        var dataListCourse = new DataResponseCourse(
+        return ResponseEntity.ok(new DataResponseCourse(
                 course.getId(),
                 course.getName(),
                 course.getType()
-        );
-        return ResponseEntity.ok(dataListCourse);
+        ));
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity updateCourse(@RequestBody @Valid DataUpdateCourse dataUpdateCourse) {
+    public ResponseEntity<DataResponseCourse> updateCourse(@RequestBody @Valid DataUpdateCourse dataUpdateCourse) {
         if (!coursesRepository.existsById(dataUpdateCourse.id()))
-            return new ResponseEntity(new HandleErrors().errorWithMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new HandleJson().withMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Courses course = coursesRepository.getReferenceById(dataUpdateCourse.id());
         course.updateData(dataUpdateCourse);
         return ResponseEntity.ok(new DataResponseCourse(
@@ -68,9 +66,9 @@ public class CoursesController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<DataResponseCourse> deleteCourse(@PathVariable Long id) {
         if (!coursesRepository.existsById(id))
-            return new ResponseEntity(new HandleErrors().errorWithMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new HandleJson().withMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Courses course = coursesRepository.getReferenceById(id);
         coursesRepository.delete(course);
         return ResponseEntity.noContent().build();

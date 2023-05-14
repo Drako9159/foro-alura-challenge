@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class HandleErrors {
+public class HandleJson {
 
 
-    public Map<String, Object> errorWithMessage(String message) {
+    public Map<String, Object> withMessage(String message) {
         Map<String, Object> map = new HashMap<>();
         map.put("message", message);
         return map;

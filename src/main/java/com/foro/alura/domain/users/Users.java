@@ -1,5 +1,6 @@
 package com.foro.alura.domain.users;
 
+import com.foro.alura.domain.topics.DataRegisterTopic;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -48,6 +49,4 @@ public class Users {
             this.password = dataUpdateUser.password();
         }
     }
-
-
 }

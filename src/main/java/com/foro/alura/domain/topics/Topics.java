@@ -61,6 +61,7 @@ public class Topics {
         this.status = dataRegisterTopic.status();
         this.author = dataRegisterTopic.author();
         this.course = dataRegisterTopic.course();
+
     }
 
     public void updateData(DataUpdateTopic dataUpdateTopic) {
@@ -69,7 +70,6 @@ public class Topics {
         }
         if (dataUpdateTopic.message() != null) {
             this.message = dataUpdateTopic.message();
-
         }
         if (dataUpdateTopic.status() != null) {
             this.status = dataUpdateTopic.status();

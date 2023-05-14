@@ -1,5 +1,6 @@
 package com.foro.alura.domain.courses;
 
+import com.foro.alura.domain.topics.DataRegisterTopic;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,6 @@ public class Courses {
         this.name = dataRegisterCourse.name();
         this.type = dataRegisterCourse.type();
     }
-
 
     public void updateData(DataUpdateCourse dataUpdateCourse) {
         if (dataUpdateCourse.name() != null) {
