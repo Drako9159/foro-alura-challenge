@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 public class Topics {
 
     @Id
@@ -41,12 +41,13 @@ public class Topics {
     private StatusTopico status = StatusTopico.NO_RESPONDIDO;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "author_id")
     private Users author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course")
+    @JoinColumn(name = "course_id")
     private Courses course;
+
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     private Set<Responses> responses = new HashSet<>();
@@ -59,9 +60,8 @@ public class Topics {
         this.title = dataRegisterTopic.title();
         this.message = dataRegisterTopic.message();
         this.status = dataRegisterTopic.status();
-        this.author = dataRegisterTopic.author();
-        this.course = dataRegisterTopic.course();
-
+        this.author = new Users(dataRegisterTopic.author().getId());
+        this.course = new Courses(dataRegisterTopic.course().getId());
     }
 
     public void updateData(DataUpdateTopic dataUpdateTopic) {

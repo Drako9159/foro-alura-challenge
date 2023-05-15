@@ -1,9 +1,7 @@
 package com.foro.alura.controller;
 
-import com.foro.alura.domain.courses.Courses;
 import com.foro.alura.domain.courses.CoursesRepository;
 import com.foro.alura.domain.topics.*;
-import com.foro.alura.domain.users.Users;
 import com.foro.alura.domain.users.UsersRepository;
 import com.foro.alura.infra.errors.HandleJson;
 import jakarta.validation.Valid;
@@ -16,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/topicos")
@@ -52,30 +47,35 @@ public class TopicsController {
         Topics topics = topicsRepository.save(new Topics(dataRegisterTopic));
         URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topics.getId()).toUri();
 
+
         return ResponseEntity.created(url).body(new DataResponseTopic(
                 topics.getId(),
                 topics.getTitle(),
                 topics.getMessage(),
                 topics.getCreatedAt(),
                 topics.getStatus(),
-                new Users(topics.getAuthor().getId()),
-                new Courses(topics.getCourse().getId())
+                topics.getAuthor().getId(),
+                topics.getCourse().getId()
 
         ));
-
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DataListTopic> getTopic(@PathVariable Long id) {
+    public ResponseEntity<DataResponseTopic> getTopic(@PathVariable Long id) {
         if (!topicsRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Topics topics = topicsRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DataListTopic(
+        System.out.println(topics.getResponses());
+
+        return ResponseEntity.ok(new DataResponseTopic(
                 topics.getId(),
                 topics.getTitle(),
                 topics.getMessage(),
-                topics.getStatus().toString(),
-                topics.getCreatedAt().toString()
+                topics.getCreatedAt(),
+                topics.getStatus(),
+                topics.getAuthor().getId(),
+                topics.getCourse().getId()
+
         ));
     }
 
@@ -91,6 +91,8 @@ public class TopicsController {
         if (!coursesRepository.existsById(dataUpdateTopic.course().getId()))
             return new ResponseEntity(new HandleJson().withMessage("COURSE_NOT_FOUND"), HttpStatus.NOT_FOUND);
 
+
+
         Topics topics = topicsRepository.getReferenceById(dataUpdateTopic.id());
         topics.updateData(dataUpdateTopic);
         return ResponseEntity.ok(new DataResponseTopic(
@@ -99,8 +101,8 @@ public class TopicsController {
                 topics.getMessage(),
                 topics.getCreatedAt(),
                 topics.getStatus(),
-                new Users(topics.getAuthor().getId()),
-                new Courses(topics.getCourse().getId())
+                topics.getAuthor().getId(),
+                topics.getCourse().getId()
         ));
     }
 

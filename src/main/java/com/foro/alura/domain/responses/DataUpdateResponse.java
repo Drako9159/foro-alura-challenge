@@ -8,6 +8,7 @@ public record DataUpdateResponse(
         @NotNull
         Long id,
         String message,
+
         Boolean solution,
         Topics topic,
         Users author

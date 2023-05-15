@@ -1,9 +1,7 @@
 package com.foro.alura.controller;
 
 import com.foro.alura.domain.responses.*;
-import com.foro.alura.domain.topics.Topics;
 import com.foro.alura.domain.topics.TopicsRepository;
-import com.foro.alura.domain.users.Users;
 import com.foro.alura.domain.users.UsersRepository;
 import com.foro.alura.infra.errors.HandleJson;
 import jakarta.validation.Valid;
@@ -40,6 +38,8 @@ public class ResponsesController {
         if (!topicsRepository.existsById(dataRegisterResponse.topic().getId()))
             return new ResponseEntity(new HandleJson().withMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
 
+
+
         Responses response = responsesRepository.save(new Responses(dataRegisterResponse));
         URI url = uriComponentsBuilder.path("/respuestas/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(url).body(new DataResponseResponse(
@@ -47,9 +47,11 @@ public class ResponsesController {
                 response.getMessage(),
                 response.getCreatedAt(),
                 response.getSolution(),
-                new Topics(response.getTopic().getId()),
-                new Users(response.getAuthor().getId())
+                response.getTopic().getId(),
+                response.getAuthor().getId()
         ));
+
+
     }
 
     @GetMapping
@@ -67,8 +69,8 @@ public class ResponsesController {
                 response.getMessage(),
                 response.getCreatedAt(),
                 response.getSolution(),
-                new Topics(response.getTopic().getId()),
-                new Users(response.getAuthor().getId())
+                response.getTopic().getId(),
+                response.getAuthor().getId()
         ));
     }
 
@@ -91,8 +93,8 @@ public class ResponsesController {
                 response.getMessage(),
                 response.getCreatedAt(),
                 response.getSolution(),
-                new Topics(response.getTopic().getId()),
-                new Users(response.getAuthor().getId())
+                response.getTopic().getId(),
+                response.getAuthor().getId()
         ));
     }
 

@@ -3,16 +3,14 @@ package com.foro.alura.domain.responses;
 import com.foro.alura.domain.topics.Topics;
 import com.foro.alura.domain.users.Users;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Table(name = "responses")
 @Entity(name = "Responses")
 @Getter
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -26,15 +24,15 @@ public class Responses {
     @Column(name = "message")
     private String message;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "topic")
-    private Topics topic;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "topic_id")
+    private Topics topic;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private Users author;
 
     @Column(name = "solution")
@@ -42,6 +40,7 @@ public class Responses {
 
     public Responses(DataRegisterResponse dataRegisterResponse){
         this.message = dataRegisterResponse.message();
+        this.solution = dataRegisterResponse.solution();
         this.topic = new Topics(dataRegisterResponse.topic().getId());
         this.author = new Users(dataRegisterResponse.author().getId());
     }
