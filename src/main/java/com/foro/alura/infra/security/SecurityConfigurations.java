@@ -19,16 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    @Autowired
-    private SecurityFilter securityFilter;
+    private final SecurityFilter securityFilter;
+
+    public SecurityConfigurations(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                .requestMatchers(HttpMethod.POST, "/foro_war/auth").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth", "/cript").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

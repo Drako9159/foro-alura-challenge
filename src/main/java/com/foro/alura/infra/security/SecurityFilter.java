@@ -21,10 +21,13 @@ import java.util.Map;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private ObjectMapper mapper;
+    private final TokenService tokenService;
+    private final ObjectMapper mapper;
+
+    public SecurityFilter(TokenService tokenService, ObjectMapper mapper) {
+        this.tokenService = tokenService;
+        this.mapper = mapper;
+    }
 
 
     @Override

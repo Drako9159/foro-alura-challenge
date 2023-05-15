@@ -41,7 +41,15 @@ La aplicación cuenta con un filtro de seguridad basado en tokens, es necesario 
 ```
 ![insomnia](./readme/3.png)
 
-Para cambiar el usuario y la contraseña se debe modificar el archivo application.properties, en el cual se encuentran las propiedades de la base de datos, el usuario y contraseña para el login.
+Para cambiar el usuario y la contraseña se debe modificar el archivo application.properties, en el cual se encuentran las propiedades de la base de datos, la contraseña se almacena encriptada en la base de datos, para encriptar la contraseña se debe utilizar el endpoint:
+
+- POST: http://localhost:8080/cript
+
+```json
+{
+    "password": "password"
+}
+```
 
 ### Herraminetas
 
