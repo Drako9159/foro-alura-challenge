@@ -1,11 +1,10 @@
 package com.foro.alura.controller;
 
-import com.foro.alura.infra.security.TokenService;
 import com.foro.alura.infra.security.DataRecordJWTToken;
+import com.foro.alura.infra.security.TokenService;
 import com.foro.alura.users.User;
 import com.foro.alura.users.UserRecordAutentication;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,20 +15,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth")
 public class AutenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+
+    public AutenticationController(AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
 
     @PostMapping
-    public ResponseEntity autentiqueUser(@RequestBody @Valid UserRecordAutentication userRecordAutentication) {
+    public ResponseEntity<DataRecordJWTToken> autentiqueUser(@RequestBody @Valid UserRecordAutentication userRecordAutentication) {
         Authentication authToken = new UsernamePasswordAuthenticationToken(userRecordAutentication.user(), userRecordAutentication.password());
         var userAutenticated = authenticationManager.authenticate(authToken);
-        System.out.println(userAutenticated);
         var JWTtoken = tokenService.tokenGenerator((User) userAutenticated.getPrincipal());
         return ResponseEntity.ok(new DataRecordJWTToken(JWTtoken));
     }
