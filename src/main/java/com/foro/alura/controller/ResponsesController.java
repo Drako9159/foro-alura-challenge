@@ -38,20 +38,9 @@ public class ResponsesController {
         if (!topicsRepository.existsById(dataRegisterResponse.topic().getId()))
             return new ResponseEntity(new HandleJson().withMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
 
-
-
         Responses response = responsesRepository.save(new Responses(dataRegisterResponse));
         URI url = uriComponentsBuilder.path("/respuestas/{id}").buildAndExpand(response.getId()).toUri();
-        return ResponseEntity.created(url).body(new DataResponseResponse(
-                response.getId(),
-                response.getMessage(),
-                response.getCreatedAt(),
-                response.getSolution(),
-                response.getTopic().getId(),
-                response.getAuthor().getId()
-        ));
-
-
+        return ResponseEntity.created(url).body(new DataResponseResponse(response));
     }
 
     @GetMapping
@@ -64,14 +53,7 @@ public class ResponsesController {
         if (!responsesRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Responses response = responsesRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DataResponseResponse(
-                response.getId(),
-                response.getMessage(),
-                response.getCreatedAt(),
-                response.getSolution(),
-                response.getTopic().getId(),
-                response.getAuthor().getId()
-        ));
+        return ResponseEntity.ok(new DataResponseResponse(response));
     }
 
     @PutMapping
@@ -88,19 +70,12 @@ public class ResponsesController {
 
         Responses response = responsesRepository.getReferenceById(dataUpdateResponse.id());
         response.updateData(dataUpdateResponse);
-        return ResponseEntity.ok(new DataResponseResponse(
-                response.getId(),
-                response.getMessage(),
-                response.getCreatedAt(),
-                response.getSolution(),
-                response.getTopic().getId(),
-                response.getAuthor().getId()
-        ));
+        return ResponseEntity.ok(new DataResponseResponse(response));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<DataResponseResponse> deleteResponse(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteResponse(@PathVariable Long id) {
         if (!responsesRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("RESPUESTA_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Responses response = responsesRepository.getReferenceById(id);

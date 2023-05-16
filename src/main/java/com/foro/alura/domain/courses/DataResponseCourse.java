@@ -5,4 +5,7 @@ public record DataResponseCourse(
         String name,
         String type
 ) {
+    public DataResponseCourse(Courses course){
+        this(course.getId(), course.getName(), course.getType());
+    }
 }

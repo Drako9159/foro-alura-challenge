@@ -5,4 +5,7 @@ public record DataResponseUser(
         String name,
         String email
 ) {
+    public DataResponseUser(Users user){
+        this(user.getId(), user.getName(), user.getEmail());
+    }
 }

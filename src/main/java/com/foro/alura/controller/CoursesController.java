@@ -26,11 +26,7 @@ public class CoursesController {
     public ResponseEntity<DataResponseCourse> saveCourse(@RequestBody @Valid DataRegisterCourse dataRegisterCourse, UriComponentsBuilder uriComponentsBuilder) {
         Courses course = coursesRepository.save(new Courses(dataRegisterCourse));
         URI url = uriComponentsBuilder.path("/cursos/{id}").buildAndExpand(course.getId()).toUri();
-        return ResponseEntity.created(url).body(new DataResponseCourse(
-                course.getId(),
-                course.getName(),
-                course.getType()
-        ));
+        return ResponseEntity.created(url).body(new DataResponseCourse(course));
     }
 
     @GetMapping
@@ -43,11 +39,7 @@ public class CoursesController {
         if (!coursesRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Courses course = coursesRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DataResponseCourse(
-                course.getId(),
-                course.getName(),
-                course.getType()
-        ));
+        return ResponseEntity.ok(new DataResponseCourse(course));
     }
 
     @PutMapping
@@ -57,16 +49,12 @@ public class CoursesController {
             return new ResponseEntity(new HandleJson().withMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Courses course = coursesRepository.getReferenceById(dataUpdateCourse.id());
         course.updateData(dataUpdateCourse);
-        return ResponseEntity.ok(new DataResponseCourse(
-                course.getId(),
-                course.getName(),
-                course.getType()
-        ));
+        return ResponseEntity.ok(new DataResponseCourse(course));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<DataResponseCourse> deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         if (!coursesRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("CURSO_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Courses course = coursesRepository.getReferenceById(id);

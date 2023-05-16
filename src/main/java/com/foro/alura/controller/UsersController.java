@@ -26,13 +26,9 @@ public class UsersController {
     public ResponseEntity<DataResponseUser> saveUser(@RequestBody @Valid DataRegisterUser dataRegisterUser, UriComponentsBuilder uriComponentsBuilder) {
         if (usersRepository.findByEmail(dataRegisterUser.email()) != null)
             return new ResponseEntity(new HandleJson().withMessage("USER_EXIST"), HttpStatus.BAD_REQUEST);
-        Users usuario = usersRepository.save(new Users(dataRegisterUser));
-        URI url = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
-        return ResponseEntity.created(url).body(new DataResponseUser(
-                usuario.getId(),
-                usuario.getName(),
-                usuario.getEmail()
-        ));
+        Users user = usersRepository.save(new Users(dataRegisterUser));
+        URI url = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(url).body(new DataResponseUser(user));
     }
 
     @GetMapping
@@ -45,16 +41,12 @@ public class UsersController {
         if (!usersRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("USER_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Users user = usersRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DataResponseUser(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
-        ));
+        return ResponseEntity.ok(new DataResponseUser(user));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<DataResponseUser> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (!usersRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("USER_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Users user = usersRepository.getReferenceById(id);
@@ -69,10 +61,6 @@ public class UsersController {
             return new ResponseEntity(new HandleJson().withMessage("USER_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Users user = usersRepository.getReferenceById(dataUpdateUser.id());
         user.updateData(dataUpdateUser);
-        return ResponseEntity.ok(new DataResponseUser(
-                user.getId(),
-                user.getName(),
-                user.getEmail())
-        );
+        return ResponseEntity.ok(new DataResponseUser(user));
     }
 }

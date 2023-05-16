@@ -36,7 +36,6 @@ public class AutenticationController {
         try {
             var userAutenticated = authenticationManager.authenticate(authToken);
             var JWTtoken = tokenService.tokenGenerator((User) userAutenticated.getPrincipal());
-
             return ResponseEntity.ok(new DataRecordJWTToken(JWTtoken));
         } catch (AuthenticationException e) {
             return new ResponseEntity(new HandleJson().withMessage("INVALID_PASSWORD"), HttpStatus.FORBIDDEN);

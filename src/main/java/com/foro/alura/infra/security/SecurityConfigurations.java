@@ -30,7 +30,7 @@ public class SecurityConfigurations {
         return httpSecurity.csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/auth", "/cript").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth", "/api/auth","/cript", "/api/cript").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

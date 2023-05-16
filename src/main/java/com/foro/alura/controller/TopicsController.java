@@ -58,19 +58,8 @@ public class TopicsController {
     public ResponseEntity<DataResponseTopic> getTopic(@PathVariable Long id) {
         if (!topicsRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
-
-        Topics topics = topicsRepository.getReferenceById(id);
-
-        return ResponseEntity.ok(new DataResponseTopic(
-                topics.getId(),
-                topics.getTitle(),
-                topics.getMessage(),
-                topics.getCreatedAt(),
-                topics.getStatus(),
-                topics.getAuthor().getId(),
-                topics.getCourse().getId(),
-                topics.getResponses().stream().map(Responses::getId).collect(Collectors.toList())
-        ));
+        Topics topic = topicsRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DataResponseTopic(topic));
     }
 
     @PutMapping()
@@ -85,26 +74,16 @@ public class TopicsController {
         if (!coursesRepository.existsById(dataUpdateTopic.course().getId()))
             return new ResponseEntity(new HandleJson().withMessage("COURSE_NOT_FOUND"), HttpStatus.NOT_FOUND);
 
-        Topics topics = topicsRepository.getReferenceById(dataUpdateTopic.id());
-        topics.updateData(dataUpdateTopic);
-
-        return ResponseEntity.ok(new DataResponseTopic(
-                topics.getId(),
-                topics.getTitle(),
-                topics.getMessage(),
-                topics.getCreatedAt(),
-                topics.getStatus(),
-                topics.getAuthor().getId(),
-                topics.getCourse().getId(),
-                topics.getResponses().stream().map(Responses::getId).collect(Collectors.toList())
-        ));
+        Topics topic = topicsRepository.getReferenceById(dataUpdateTopic.id());
+        topic.updateData(dataUpdateTopic);
+        return ResponseEntity.ok(new DataResponseTopic(topic));
     }
 
 
     //LOGICAL DELETE
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<DataResponseTopic> deleteTopic(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTopic(@PathVariable Long id) {
         if (!topicsRepository.existsById(id))
             return new ResponseEntity(new HandleJson().withMessage("TOPIC_NOT_FOUND"), HttpStatus.NOT_FOUND);
         Topics topics = topicsRepository.getReferenceById(id);
@@ -112,6 +91,4 @@ public class TopicsController {
         return ResponseEntity.noContent().build();
 
     }
-
-
 }
