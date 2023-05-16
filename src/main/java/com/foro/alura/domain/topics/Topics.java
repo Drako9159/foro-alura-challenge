@@ -11,8 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Table(name = "topics")
 @Entity(name = "Topics")
@@ -48,9 +47,11 @@ public class Topics {
     @JoinColumn(name = "course_id")
     private Courses course;
 
+    //@OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    //private Set<Responses> responses = new HashSet<>();
 
-    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
-    private Set<Responses> responses = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic", fetch = FetchType.LAZY)
+    private List<Responses> responses;
 
     public Topics(Long id) {
         this.id = id;

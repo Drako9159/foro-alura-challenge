@@ -10,8 +10,7 @@ public class AutenticationService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User();
-        return user;
+        return new User();
     }
 
 

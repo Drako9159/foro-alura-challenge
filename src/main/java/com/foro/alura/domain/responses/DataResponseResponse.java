@@ -9,5 +9,6 @@ public record DataResponseResponse(
         Boolean solution,
         Long topic,
         Long author
+
 ) {
 }

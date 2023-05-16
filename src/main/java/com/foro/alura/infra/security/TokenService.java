@@ -20,38 +20,39 @@ public class TokenService {
     @Value("{api.security.secret}")
     private String apiSecret;
 
-    public String tokenGenerator(User user){
-
-        try{
+    public String tokenGenerator(User user) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(apiSecret);
             return JWT.create()
-                    .withIssuer("voll med")
+                    .withIssuer("alura.forum")
                     .withSubject(user.getUsername())
                     .withClaim("id", user.getId())
                     .withExpiresAt(generateDateExpire())
                     .sign(algorithm);
 
-        } catch (JWTCreationException e){
+        } catch (JWTCreationException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     public String getSubject(String token) {
-        if(token == null) {
+        if (token == null) {
             throw new RuntimeException();
         }
         DecodedJWT verifier = null;
         try {
             Algorithm algorithm = Algorithm.HMAC256(apiSecret);
+
             verifier = JWT.require(algorithm)
-                    .withIssuer("voll med")
+                    .withIssuer("alura.forum")
                     .build()
                     .verify(token);
             verifier.getSubject();
         } catch (JWTVerificationException exception) {
         }
         if (verifier.getSubject() == null) {
+
             throw new RuntimeException("Verifier invalido");
         }
         return verifier.getSubject();
@@ -59,6 +60,7 @@ public class TokenService {
 
     private Instant generateDateExpire() {
         // 5 to 24
-        return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-05:00"));
+
+        return LocalDateTime.now().plusHours(20).toInstant(ZoneOffset.of("-05:00"));
     }
 }

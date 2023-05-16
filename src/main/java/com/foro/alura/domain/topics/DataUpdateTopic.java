@@ -14,7 +14,5 @@ public record DataUpdateTopic(
         Users author,
         Courses course
 ) {
-    public DataUpdateTopic(@NotNull Long id, String title, String message, StatusTopico status) {
-        this(id, title, message, status, null, null);
-    }
+
 }

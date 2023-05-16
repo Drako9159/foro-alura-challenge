@@ -37,7 +37,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             try {
                 var token = authHeader.replace("Bearer ", "");
                 var validate = tokenService.getSubject(token); // extract validate
-
                 if (validate != null) {
                     User user = new User();
                     var autentication = new UsernamePasswordAuthenticationToken(user, null,

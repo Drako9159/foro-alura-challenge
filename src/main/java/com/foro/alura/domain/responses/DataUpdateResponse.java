@@ -8,12 +8,9 @@ public record DataUpdateResponse(
         @NotNull
         Long id,
         String message,
-
         Boolean solution,
         Topics topic,
         Users author
 ) {
-    public DataUpdateResponse(@NotNull Long id, String message, Boolean solution) {
-        this(id, message, solution, null, null);
-    }
+
 }

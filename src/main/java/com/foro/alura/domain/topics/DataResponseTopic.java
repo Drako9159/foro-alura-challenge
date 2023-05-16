@@ -3,6 +3,7 @@ package com.foro.alura.domain.topics;
 import com.foro.alura.model.StatusTopico;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record DataResponseTopic(
         Long id,
@@ -11,7 +12,9 @@ public record DataResponseTopic(
         LocalDateTime createdAt,
         StatusTopico status,
         Long author,
-        Long course
+        Long course,
+        List<Long> responses
+
 ) {
 
 

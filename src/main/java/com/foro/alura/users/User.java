@@ -19,8 +19,8 @@ import java.util.List;
 public class User implements UserDetails {
 
     private Long id;
-    private String user = "drako.drako";
-    private String password = "$2a$10$xmSRc0m4Vju/vRw5JS5mVeBJ5q7HVBFqyNBEzEtnMtJFBG1kz26oS";
+    private String user = "user";
+    private String password = "$2a$10$E3sX78eHn3yVdPXqfqxWKeLk5G/lFujlCZ0hZe2JwWmXfz98Bft/W";
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
