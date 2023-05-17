@@ -4,7 +4,7 @@
 
 Esta aplicación está diseñada para administrar un hotel, en el cual se pueden registrar clientesy reservas, es posible registrar una reserva y añadir uno o más clientes a la misma, también permite la edición y eliminación de reservas y clientes.
 
-Esta aplicación está desarrollada sirve un API REST, la cual se puede consumir desde cualquier cliente REST, para el desarrollo de la aplicación se utilizó el framework Spring Boot, el cual permite el desarrollo de aplicaciones web de manera rápida y sencilla, también se utilizó el framework Hibernate para el mapeo de las entidades y la conexión con la base de datos, la base de datos utilizada es Postgrest SQL.
+Esta aplicación está desarrollada para servir un API REST, la cual se puede consumir desde cualquier cliente REST, para el desarrollo de la aplicación se utilizó el framework Spring Boot, el cual permite el desarrollo de aplicaciones web de manera rápida y sencilla, también se utilizó el framework Hibernate para el mapeo de las entidades y la conexión con la base de datos, la base de datos utilizada es Postgrest SQL.
 
 ### Instalación
 
